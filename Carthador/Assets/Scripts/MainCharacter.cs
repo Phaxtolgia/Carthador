@@ -82,12 +82,18 @@ public class MainCharacter : MonoBehaviour
                 {
                     anim.Play("Attack_Front");
 
-                    arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position -(this.transform.up * 0.1f), Quaternion.Euler (0, 0 , 180));
+                    arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position - (this.transform.up * 0.1f), Quaternion.Euler(0, 0, 180));
                 }
                 else if (h > 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Side") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Side"))
                 {
                     anim.Play("Attack_Side");
-                    arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position + (new Vector3 (this.scale.x,0,0) * 0.1f), Quaternion.Euler(0, 0, 90)); ;
+
+                    if (scale.x >= 0) {
+                        print("Right");
+                        arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position + (-this.transform.right * 0.1f), Quaternion.Euler(0, 0, 90));
+                    }
+                else
+                    arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position + (this.transform.right * 0.1f), Quaternion.Euler(0, 0, 90));
                 }
 
             }
