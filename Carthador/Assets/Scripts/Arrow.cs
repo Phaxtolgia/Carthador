@@ -5,7 +5,7 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
 
-    private float speed = 5f;
+    private float speed = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +16,7 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position += this.transform.up * speed * Time.deltaTime;
+        this.GetComponent<Rigidbody2D>().MovePosition (this.transform.position + this.transform.up * speed * Time.deltaTime);
 
     }
 
