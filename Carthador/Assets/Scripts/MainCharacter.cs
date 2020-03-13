@@ -15,10 +15,12 @@ public class MainCharacter : MonoBehaviour
 
     private GameObject arrow;
 
+    private Game game;
 
     // Start is called before the first frame update
     void Start()
     {
+        game = Camera.main.GetComponent<Game>();
         anim = this.GetComponent<Animator>();
         anim.Play("Main1_Idle_Back");
     }
@@ -68,7 +70,7 @@ public class MainCharacter : MonoBehaviour
 
 
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && game.state == "None")
             {
 
                 anim.SetBool("Attack", true);
