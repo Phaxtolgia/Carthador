@@ -13,7 +13,12 @@ public class Game : MonoBehaviour
     public Text messages;
     public GameObject messagesParent;
     public GameObject player;
-    public string state = "None";
+    private MainCharacter playerController;
+    
+        public string state = "None";
+
+    [HideInInspector] public Image healthBar;
+    [HideInInspector] public Image aetherBar;
 
 
     // Start is called before the first frame update
@@ -21,6 +26,10 @@ public class Game : MonoBehaviour
     {
         state = "None";
         player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<MainCharacter>();
+
+        healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+        aetherBar = GameObject.Find("AetherBar").GetComponent<Image>();
 
         messages = GameObject.Find("MessagesText").GetComponent<Text>();
         messagesParent = messages.transform.parent.gameObject;
@@ -31,6 +40,10 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
+        aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
+
+
     }
 }

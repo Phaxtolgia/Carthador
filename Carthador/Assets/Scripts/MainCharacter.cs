@@ -9,6 +9,11 @@ public class MainCharacter : MonoBehaviour
     public int maxHealth = 100;
     [HideInInspector] public int currentHealth;
 
+    public float maxAether = 100;
+    [HideInInspector]public float currentAether;
+
+    public int airAttackCost = 1;
+
     private Animator anim;
     private Vector3 scale;
 
@@ -28,6 +33,7 @@ public class MainCharacter : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        currentAether = maxAether;
 
         game = Camera.main.GetComponent<Game>();
         anim = this.GetComponent<Animator>();
@@ -79,30 +85,34 @@ public class MainCharacter : MonoBehaviour
 
 
             
-            if (Input.GetButtonDown("Fire1") && (game.state == "Fighting" || game.state == "ReadyToFight"))
+            if (Input.GetButtonDown("Fire1") && (game.state == "Fighting" || game.state == "ReadyToFight") && this.currentAether >= airAttackCost)
             {
+
+                this.currentAether -= airAttackCost;
+
+                string path = "AetherBullet";
 
                 anim.SetBool("Attack", true);
                 if (v > 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Back") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Back"))
                 {
                     anim.Play("Attack_Back");
 
-                    arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position + (this.transform.up * 0.3f), Quaternion.identity);
+                    arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + (this.transform.up * 0.3f), Quaternion.identity);
                 }
                 else if (v < 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Front") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Front"))
                 {
                     anim.Play("Attack_Front");
 
-                    arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position - (this.transform.up * 0.3f), Quaternion.Euler(0, 0, 180));
+                    arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position - (this.transform.up * 0.3f), Quaternion.Euler(0, 0, 180));
                 }
                 else if (h != 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Side") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Side"))
                 {
                     anim.Play("Attack_Side");
 
                     if (scale.x >= 0)
-                        arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position + (this.transform.right * 0.3f), Quaternion.Euler(0, 0, -90));
+                        arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + (this.transform.right * 0.3f), Quaternion.Euler(0, 0, -90));
                     else
-                        arrow = GameObject.Instantiate(Resources.Load<GameObject>("Sprites/Arrow"), this.transform.position + (-this.transform.right * 0.3f), Quaternion.Euler(0, 0, 90));
+                        arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + (-this.transform.right * 0.3f), Quaternion.Euler(0, 0, 90));
                 }
 
             }
@@ -124,6 +134,9 @@ public class MainCharacter : MonoBehaviour
         
         if (this.currentHealth <= 0)
             SceneManager.LoadScene("China");
+
+        if (this.currentAether < 0)
+            this.currentAether = 0;
 
     }
 
@@ -148,5 +161,20 @@ public class MainCharacter : MonoBehaviour
 
 
         attacked = false;
+    }
+
+
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Aether")
+        {
+            if (this.currentAether + 10 >= this.maxAether)
+                this.currentAether = this.maxAether;
+            else
+                this.currentAether += 10;
+            Destroy(collision.collider.gameObject);
+
+        }
     }
 }
