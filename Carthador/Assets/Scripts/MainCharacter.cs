@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainCharacter : MonoBehaviour
 {
+
+    public int maxHealth = 100;
+    [HideInInspector] public int currentHealth;
 
     private Animator anim;
     private Vector3 scale;
@@ -17,9 +21,14 @@ public class MainCharacter : MonoBehaviour
 
     private Game game;
 
+    [HideInInspector] public bool attacked = false;
+    [HideInInspector] public bool nearEnemy = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = maxHealth;
+
         game = Camera.main.GetComponent<Game>();
         anim = this.GetComponent<Animator>();
         anim.Play("Main1_Idle_Back");
@@ -69,8 +78,8 @@ public class MainCharacter : MonoBehaviour
             }
 
 
-
-            if (Input.GetButtonDown("Fire1") && game.state == "None")
+            
+            if (Input.GetButtonDown("Fire1") && (game.state == "Fighting" || game.state == "ReadyToFight"))
             {
 
                 anim.SetBool("Attack", true);
@@ -108,8 +117,14 @@ public class MainCharacter : MonoBehaviour
         }
 
 
+        if (!attacked)
+            this.GetComponent<Rigidbody2D>().MovePosition(new Vector2(this.transform.position.x, this.transform.position.y) + new Vector2(h, v) * 7f * Time.deltaTime);
+        else
+            StartCoroutine(revertAttacked());
+        
+        if (this.currentHealth <= 0)
+            SceneManager.LoadScene("China");
 
-        this.GetComponent<Rigidbody2D>().MovePosition (new Vector2 (this.transform.position.x, this.transform.position.y) + new Vector2(h, v) * 0.03f);
     }
 
 
@@ -120,5 +135,18 @@ public class MainCharacter : MonoBehaviour
         this.transform.localScale = scale;
 
 
+    }
+
+
+    public IEnumerator revertAttacked()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+
+        this.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+
+
+
+        attacked = false;
     }
 }

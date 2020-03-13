@@ -19,7 +19,7 @@ public class Game : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        state = "None";
         player = GameObject.FindGameObjectWithTag("Player");
 
         messages = GameObject.Find("MessagesText").GetComponent<Text>();
