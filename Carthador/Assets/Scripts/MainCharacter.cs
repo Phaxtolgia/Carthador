@@ -85,45 +85,40 @@ public class MainCharacter : MonoBehaviour
                 anim.SetFloat("Horizontal", h);
                 anim.SetFloat("Vertical", v);
             }
-
-
-            // AETHER ATTACK //
-            if (Input.GetButtonDown("Fire1") && (game.state == "Fighting" || game.state == "ReadyToFight") && this.currentAether >= airAttackCost)
-            {
-
-                this.currentAether -= airAttackCost;
-
-                string path = "AetherBullet";
-
-                anim.SetBool("Attack", true);
-                if (v > 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Back") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Back"))
-                {
-                    anim.Play("Attack_Back");
-
-                    arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + (this.transform.up * 0.3f), Quaternion.identity);
-                }
-                else if (v < 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Front") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Front"))
-                {
-                    anim.Play("Attack_Front");
-
-                    arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position - (this.transform.up * 0.3f), Quaternion.Euler(0, 0, 180));
-                }
-                else if (h != 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Side") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Side"))
-                {
-                    anim.Play("Attack_Side");
-
-                    if (scale.x >= 0)
-                        arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + (this.transform.right * 0.3f), Quaternion.Euler(0, 0, -90));
-                    else
-                        arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + (-this.transform.right * 0.3f), Quaternion.Euler(0, 0, 90));
-                }
-
-            }
-
         }
-        
 
-        if (anim.GetBool ("Attack") && (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1))
+
+        if (Input.GetButtonDown("Fire1") && (game.state == "Fighting" || game.state == "ReadyToFight") && this.currentAether >= airAttackCost)
+        {
+            this.currentAether -= airAttackCost;
+
+            string path = "AetherBullet";
+
+            Vector3 attackDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
+
+            float aimH = Input.GetAxis("Horizontal2");
+            float aimV = Input.GetAxis("Vertical2");
+
+            if (aimH != 0 || aimV != 0)
+                attackDir = new Vector3(aimH, aimV, 0);
+
+
+            anim.SetBool("Attack", true);
+            arrow = GameObject.Instantiate(Resources.Load<GameObject>(path), this.transform.position + attackDir.normalized, Quaternion.identity);
+
+            if (v > 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Back") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Back"))
+                anim.Play("Attack_Back");
+            else if (v < 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Front") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Front"))
+                anim.Play("Attack_Front");
+            else if (h != 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Main1_Idle_Side") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Side"))
+                anim.Play("Attack_Side");
+        }
+
+
+
+
+
+            if (anim.GetBool ("Attack") && (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1))
         {
                 
             anim.SetBool("Attack", false);
@@ -135,22 +130,9 @@ public class MainCharacter : MonoBehaviour
         {
             this.isDefending = true;
             this.currentAether -= defenseCost;
-            GameObject.Instantiate(Resources.Load("AetherDefense"),this.transform);
+            GameObject.Instantiate(Resources.Load("AetherDefense"), this.transform);
 
         }
-
-
-
-
-
-
-
-
-
-        if (!attacked)
-            this.GetComponent<Rigidbody2D>().MovePosition(new Vector2(this.transform.position.x, this.transform.position.y) + new Vector2(h, v) * 7f * Time.deltaTime);
-        else
-            StartCoroutine(revertAttacked());
         
         if (this.currentHealth <= 0)
             SceneManager.LoadScene("China");
@@ -159,6 +141,30 @@ public class MainCharacter : MonoBehaviour
             this.currentAether = 0;
 
     }
+
+
+
+
+    public void FixedUpdate()
+    {
+
+        previousH = h;
+        previousV = v;
+
+        h = Input.GetAxisRaw("Horizontal");
+        v = Input.GetAxisRaw("Vertical");
+
+
+        if (!attacked)
+            this.GetComponent<Rigidbody2D>().MovePosition(new Vector2(this.transform.position.x, this.transform.position.y) + new Vector2(h, v) * 3f  * Time.deltaTime);
+        else
+            StartCoroutine(revertAttacked());
+    }
+
+
+
+
+
 
 
     private void FlipX ()

@@ -50,7 +50,7 @@ public class NPC : MonoBehaviour
         }
 
 
-        if (Vector3.Distance(player.transform.position, this.transform.position) < 0.3f)
+        if (Vector3.Distance(player.transform.position, this.transform.position) < 1f)
         {
             if (!nearPlayer)
             {
