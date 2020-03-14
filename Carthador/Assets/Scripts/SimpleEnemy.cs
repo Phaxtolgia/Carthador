@@ -47,7 +47,10 @@ public class SimpleEnemy : MonoBehaviour
 
             Vector3 dir = nextPosition - this.transform.position;
 
-            if (!nearPlayer)
+
+            if (player.GetComponent<MainCharacter>().isDefending && nearPlayer)
+                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position - dir.normalized * 50f * Time.deltaTime);
+            else if (!nearPlayer)
                 this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
             else if (this.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Dynamic)
                 this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 5f * Time.deltaTime);

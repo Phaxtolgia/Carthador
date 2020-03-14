@@ -24,6 +24,8 @@ public class Game : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        Physics2D.IgnoreLayerCollision(8, 9);
         state = "None";
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<MainCharacter>();

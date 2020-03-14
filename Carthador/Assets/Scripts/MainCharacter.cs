@@ -13,6 +13,7 @@ public class MainCharacter : MonoBehaviour
     [HideInInspector]public float currentAether;
 
     public int airAttackCost = 1;
+    public int defenseCost = 5;
 
     private Animator anim;
     private Vector3 scale;
@@ -28,6 +29,8 @@ public class MainCharacter : MonoBehaviour
 
     [HideInInspector] public bool attacked = false;
     [HideInInspector] public bool nearEnemy = false;
+
+    [HideInInspector] public bool isDefending = false;
 
     // Start is called before the first frame update
     void Start()
@@ -84,7 +87,7 @@ public class MainCharacter : MonoBehaviour
             }
 
 
-            
+            // AETHER ATTACK //
             if (Input.GetButtonDown("Fire1") && (game.state == "Fighting" || game.state == "ReadyToFight") && this.currentAether >= airAttackCost)
             {
 
@@ -125,6 +128,23 @@ public class MainCharacter : MonoBehaviour
                 
             anim.SetBool("Attack", false);
         }
+
+
+        // AETHER DEFENSE //
+        if (Input.GetButtonDown("Fire2") && this.currentAether >= defenseCost)
+        {
+            this.isDefending = true;
+            this.currentAether -= defenseCost;
+            GameObject.Instantiate(Resources.Load("AetherDefense"),this.transform);
+
+        }
+
+
+
+
+
+
+
 
 
         if (!attacked)
