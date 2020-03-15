@@ -9,7 +9,7 @@ public class Game : MonoBehaviour
     public int gamePhase = 0;
     public string currentQuest;
     public int currentQuestPhase;
-    
+
     public Text messages;
     public GameObject messagesParent;
     public GameObject player;
@@ -42,10 +42,7 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
-
-
     }
 }
