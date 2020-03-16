@@ -106,11 +106,11 @@ public class Game : MonoBehaviour
             
             if (i == 0) {
 
-                posX = panelWidth - itemSize / 2;
-                posY = itemSize / 2;
+                posX = (panelWidth / 2) - (panelWidth / 8);
+                posY = (panelHeight / 2) - (panelHeight / 8);
             }
             else if (rowsCounter == 0) {
-                posX = inventoryItems[i - 1].transform.position.x - itemSize;
+                posX = inventoryItems[i - 1].transform.position.x + itemSize;
                 posY = inventoryItems [i - 1].transform.position.y;
             }
             else {
@@ -131,7 +131,12 @@ public class Game : MonoBehaviour
             
             inventoryItems.Add ( GameObject.Instantiate (Resources.Load <GameObject> (path), inventory.transform) );
             inventoryItems[i].name = inventoryItems [i].name + " " + i;
+
             inventoryScript.items [i] = inventoryItems[i].name;
+            
+            if (inventoryScript.items [i].Contains ("Empty"))
+                inventoryScript.items [i] = "Empty";
+
             inventoryItems[i].transform.position = new Vector3 (posX, posY, 0);
             
             

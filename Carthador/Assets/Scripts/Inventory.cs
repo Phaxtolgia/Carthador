@@ -14,16 +14,8 @@ public class Inventory : MonoBehaviour
 
         maxItems = 10;
 
-        items.Add("Health Potion");
-        items.Add("Aether Potion");
-        items.Add("Health Potion");
-        items.Add("Aether Potion");
-        items.Add("Health Potion");
-        items.Add("Aether Potion");
-        items.Add("Health Potion");
-        items.Add("Aether Potion");
-        items.Add("Health Potion");
-        items.Add("Aether Potion");
+        for (int i = 0; i < maxItems; i++)
+            items.Add ("Empty");
     }
 
     // Update is called once per frame

@@ -15,6 +15,9 @@ public class MainCharacter : MonoBehaviour
     public int airAttackCost = 1;
     public int defenseCost = 5;
 
+
+    private Inventory inventory;
+
     private Animator anim;
     private Vector3 scale;
 
@@ -39,6 +42,8 @@ public class MainCharacter : MonoBehaviour
         currentAether = maxAether;
 
         game = Camera.main.GetComponent<Game>();
+        inventory = game.GetComponent <Inventory> ();
+
         anim = this.GetComponent<Animator>();
         anim.Play("Main1_Idle_Back");
     }
@@ -201,12 +206,26 @@ public class MainCharacter : MonoBehaviour
     {
         if (collision.collider.tag == "Aether")
         {
-            if (this.currentAether + 10 >= this.maxAether)
-                this.currentAether = this.maxAether;
-            else
-                this.currentAether += 10;
-            Destroy(collision.collider.gameObject);
+            int i = inventory.items.IndexOf ("Empty");
 
+            if ( i >= 0){ 
+                inventory.items [i] = "Aether Potion";
+
+                Destroy(collision.collider.gameObject);
+            }
+
+        }
+        if (collision.collider.tag == "Health")
+        {
+            int i = inventory.items.IndexOf ("Empty");
+
+            if ( i >= 0){ 
+                inventory.items [i] = "Health Potion";
+
+                Destroy(collision.collider.gameObject);
+            }
+            else
+                print (inventory.items[3]);
         }
     }
 }

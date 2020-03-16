@@ -53,7 +53,7 @@ public class SimpleEnemy : MonoBehaviour
             else if (!nearPlayer)
                 this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
             else if (this.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Dynamic)
-                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 5f * Time.deltaTime);
+                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 3f * Time.deltaTime);
         }
 
         if (Vector3.Distance(this.transform.position, nextPosition) < 0.5f && !nextPositionReached && !nearPlayer)
