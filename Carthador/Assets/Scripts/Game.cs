@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -18,12 +19,17 @@ public class Game : MonoBehaviour
     private List <GameObject> inventoryItems;
 
 
+    public GameObject innMenu;
+
+
     [HideInInspector] public bool isGamePaused = false;
 
+    
 
-
-    public GameObject player;
+    [HideInInspector]public GameObject player;
     private MainCharacter playerController;
+
+    [HideInInspector] public string lastLevel = "China";
     
         public string state = "None";
 
@@ -32,6 +38,8 @@ public class Game : MonoBehaviour
 
 
     // Start is called before the first frame update
+
+
     void Start()
     {
 
@@ -51,12 +59,23 @@ public class Game : MonoBehaviour
         messages = GameObject.Find("MessagesText").GetComponent<Text>();
         messagesParent = messages.transform.parent.gameObject;
         messagesParent.SetActive(false);
+        
+        innMenu = GameObject.Find ("InnMenu");
+        innMenu.SetActive(false);
+
+        DontDestroyOnLoad (this.gameObject);
+
+        SceneManager.sceneLoaded += OnLevelChanged;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
+
+
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
 
@@ -162,6 +181,22 @@ public class Game : MonoBehaviour
         inventoryItems.Clear();
 
     }
+
+
+    public void OnLevelChanged (Scene scene, LoadSceneMode mode) {
+
+        StartCoroutine (changeLastLevelnName(scene));
+
+    }
+
+    private IEnumerator changeLastLevelnName (Scene scene) {
+
+        yield return new WaitForSeconds (0.1f);
+
+        this.lastLevel = scene.name;
+
+    }
+
 
 
 

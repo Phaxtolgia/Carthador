@@ -11,6 +11,9 @@ public class Messages : MonoBehaviour
     private int page = 0;
 
     private Game game;
+    private string previousGameState;
+
+    [HideInInspector] public GameObject followingMenu;
 
     private bool firstMessage;
 
@@ -25,7 +28,7 @@ public class Messages : MonoBehaviour
     void Update()
     {
 
-        if (message != "")
+        if (message != "" && previousGameState != game.state)
         {
             messages = new List<string>(message.Split("/".ToCharArray()));
             firstMessage = true;
@@ -39,16 +42,21 @@ public class Messages : MonoBehaviour
             this.GetComponent<Text>().text = messages[0];
 
         }
-        else if (page < messages.Count)
+        else if (page < messages.Count && this.GetComponent<Text>().text != messages[page])
             this.GetComponent<Text>().text = messages[page];
         else if (page >= messages.Count && game.state != "NearNPC")
         {
-            this.GetComponent<Text>().text = "";
-            message = "";
-            messages.Clear();
-            page = 0;
 
-            Time.timeScale = 1;
+            if (followingMenu == null){
+                this.GetComponent<Text>().text = "";
+                message = "";
+                messages.Clear();
+                page = 0;
+
+                Time.timeScale = 1;
+            }
+            else 
+                followingMenu.SetActive (true);
 
 
             this.transform.parent.gameObject.SetActive(false);
@@ -56,13 +64,14 @@ public class Messages : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1") && game.state == "Talking" && !firstMessage)
         {
-
             this.GetComponent<AudioSource>().Play();
             page++;
         }
 
         if (firstMessage)
             firstMessage = false;
+
+        previousGameState = game.state;
 
     }
 }

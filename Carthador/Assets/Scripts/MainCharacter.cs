@@ -36,21 +36,34 @@ public class MainCharacter : MonoBehaviour
     [HideInInspector] public bool isDefending = false;
 
     // Start is called before the first frame update
+
+
     void Start()
     {
-        currentHealth = maxHealth;
-        currentAether = maxAether;
 
-        game = Camera.main.GetComponent<Game>();
-        inventory = game.GetComponent <Inventory> ();
+         DontDestroyOnLoad (this.gameObject);
 
-        anim = this.GetComponent<Animator>();
-        anim.Play("Main1_Idle_Back");
+         SceneManager.sceneLoaded += OnLevelChanged;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (game == null) {
+            
+            currentHealth = maxHealth;
+            currentAether = maxAether;
+
+            game = Camera.main.GetComponent<Game>();
+            inventory = game.GetComponent <Inventory> ();
+
+            anim = this.GetComponent<Animator>();
+            anim.Play("Main1_Idle_Back");
+
+
+        }
+
 
         if (game.isGamePaused)
             return;
@@ -156,7 +169,7 @@ public class MainCharacter : MonoBehaviour
     public void FixedUpdate()
     {
 
-        if (game.isGamePaused)
+        if (game == null || game.isGamePaused)
             return;
 
         previousH = h;
@@ -228,4 +241,18 @@ public class MainCharacter : MonoBehaviour
                 print (inventory.items[3]);
         }
     }
+
+    public void OnLevelChanged (Scene scene, LoadSceneMode mode) {
+
+
+        Vector3 spawnPosition;
+        if (game != null)
+            spawnPosition = GameObject.Find ("Player Spawn " + game.lastLevel).transform.position;
+        else
+            spawnPosition = GameObject.Find ("Player Spawn").transform.position;
+        
+        this.transform.position = spawnPosition;
+
+    }
+
 }
