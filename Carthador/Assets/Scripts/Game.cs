@@ -66,13 +66,17 @@ public class Game : MonoBehaviour
                 
                 inventory.SetActive (true);
                 this.isGamePaused = true;
-                Time.timeScale = 0;
                 this.fillInventory ();
+
+                Time.timeScale = 0;
+                
             }
             else if (inventory.activeSelf) {
                 
                 inventory.SetActive (false);
                 this.isGamePaused = false;
+                this.clearInventory();
+
                 Time.timeScale = 1;
             }
 
@@ -118,10 +122,16 @@ public class Game : MonoBehaviour
 
             string path = "Inventory/Empty";
 
-            if ( i < inventoryScript.items.Count)
-                path = "Inventory/" + inventoryScript.items[i];
-
+            if ( i < inventoryScript.items.Count) {
+                if (inventoryScript.items[i].Contains ("(Clone)"))
+                    path = "Inventory/" + inventoryScript.items[i].Substring(0, inventoryScript.items[i].IndexOf ("(Clone)"));
+                else
+                 path = "Inventory/" + inventoryScript.items[i];
+            }
+            
             inventoryItems.Add ( GameObject.Instantiate (Resources.Load <GameObject> (path), inventory.transform) );
+            inventoryItems[i].name = inventoryItems [i].name + " " + i;
+            inventoryScript.items [i] = inventoryItems[i].name;
             inventoryItems[i].transform.position = new Vector3 (posX, posY, 0);
             
             
@@ -135,4 +145,20 @@ public class Game : MonoBehaviour
             }
         }
     }
+
+
+    private void clearInventory () {
+
+        foreach (GameObject item in inventoryItems) {
+
+            Destroy (item.gameObject);
+        }
+
+        inventoryItems.Clear();
+
+    }
+
+
+
+
 }

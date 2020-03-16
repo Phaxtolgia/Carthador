@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8491671168833811168}
   - component: {fileID: 8572717758372876683}
   - component: {fileID: 4422136855126484915}
+  - component: {fileID: 4736222518868680067}
   m_Layer: 5
   m_Name: Health Potion
   m_TagString: Untagged
@@ -96,8 +97,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.8018868, g: 0.79432184, b: 0.79432184, a: 1}
+    m_PressedColor: {r: 0.5849056, g: 0.57938766, b: 0.57938766, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -117,7 +118,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8572717758372876683}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 670033343, guid: ad46de4a42306f14d92a9c48433bd46f, type: 3}
+        m_MethodName: OnLeftClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4736222518868680067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310152488561185824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f942537819bc336696c306371b80254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8718120109559306577
 GameObject:
   m_ObjectHideFlags: 0

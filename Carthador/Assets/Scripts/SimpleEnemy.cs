@@ -49,7 +49,7 @@ public class SimpleEnemy : MonoBehaviour
 
 
             if (player.GetComponent<MainCharacter>().isDefending && nearPlayer)
-                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position - dir.normalized * 50f * Time.deltaTime);
+                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position - dir.normalized * 10f * Time.deltaTime);
             else if (!nearPlayer)
                 this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
             else if (this.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Dynamic)

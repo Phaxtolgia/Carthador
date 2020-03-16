@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1450455986392870266}
   - component: {fileID: 1450455986392870265}
   - component: {fileID: 1450455986392870278}
+  - component: {fileID: 670033342}
+  - component: {fileID: 670033343}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -61,7 +63,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -119,5 +121,38 @@ MonoBehaviour:
   currentQuestPhase: 0
   messages: {fileID: 0}
   messagesParent: {fileID: 0}
+  inventory: {fileID: 0}
+  inventoryScript: {fileID: 0}
+  isGamePaused: 0
   player: {fileID: 0}
   state: 
+  healthBar: {fileID: 0}
+  aetherBar: {fileID: 0}
+--- !u!114 &670033342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450455986392870267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1019b111d61f8c65bac3c6766615ae51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  maxItems: 0
+--- !u!114 &670033343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450455986392870267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949b7dc210f0e942c88f88bc6452b39c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPotionRecoveryAmount: 10
+  aetherPotionRecoveryAmount: 10

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 746204991573621124}
   - component: {fileID: 746204991573621126}
   - component: {fileID: 746204991573621127}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Main1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 746204991573621121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.81, y: -10.02, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -146,7 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  maxAether: 100
+  currentAether: 0
+  airAttackCost: 1
+  defenseCost: 5
   attacked: 0
+  nearEnemy: 0
+  isDefending: 0
 --- !u!95 &746204991573621127
 Animator:
   serializedVersion: 3

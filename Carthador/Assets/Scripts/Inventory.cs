@@ -12,7 +12,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
 
-        maxItems = 50;
+        maxItems = 10;
 
         items.Add("Health Potion");
         items.Add("Aether Potion");

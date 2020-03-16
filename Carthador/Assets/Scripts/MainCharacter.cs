@@ -47,6 +47,9 @@ public class MainCharacter : MonoBehaviour
     void Update()
     {
 
+        if (game.isGamePaused)
+            return;
+
         previousH = h;
         previousV = v;
 
@@ -147,6 +150,9 @@ public class MainCharacter : MonoBehaviour
 
     public void FixedUpdate()
     {
+
+        if (game.isGamePaused)
+            return;
 
         previousH = h;
         previousV = v;
