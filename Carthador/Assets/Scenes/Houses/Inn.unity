@@ -1351,7 +1351,7 @@ GameObject:
   - component: {fileID: 942181199}
   - component: {fileID: 942181204}
   m_Layer: 0
-  m_Name: npc_0
+  m_Name: InnKeeper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1391,8 +1391,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogues:
-  - Hello!/Welcome to our inn. What would you like to do?
-  questDialogues: []
+  - Hello, Mason/What do you need?
+  questDialogues:
+  - Hello Mason! I haven't seen you in a while./We haven't had any Aether deliveries
+    in a month./Fret not! I've been holding these 2 bottles just for you ;)/Don't
+    worry about the money, given all that you do for us in this town./Go on, take
+    'em.
 --- !u!61 &942181201
 BoxCollider2D:
   m_ObjectHideFlags: 0

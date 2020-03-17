@@ -8,11 +8,13 @@ public class Seller : MonoBehaviour
 
     public string[] dialogues;
     public string[] questDialogues;
-
+	
     private Game game;
 
     private GameObject player;
 
+	private bool firstMeeting = true;
+	
     private bool nearPlayer;
 
     private GameObject innMenu;
@@ -55,6 +57,11 @@ public class Seller : MonoBehaviour
             game.messagesParent.SetActive(true);
             game.messages.text = "Talk";
             game.state = "NearNPC";
+			
+			if (this.name = "InnKeeper"){
+				
+				firstMeeting = false;
+			}	
         }
     }
 
