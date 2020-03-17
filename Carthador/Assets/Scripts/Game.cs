@@ -8,7 +8,10 @@ public class Game : MonoBehaviour
 {
 
     public int gamePhase = 0;
+    public string mainQuest;
     public string currentQuest;
+
+    public List <string> completedQuests;
     public int currentQuestPhase;
 
     public Text messages;
@@ -63,6 +66,10 @@ public class Game : MonoBehaviour
         innMenu = GameObject.Find ("InnMenu");
         innMenu.SetActive(false);
 
+
+
+        completedQuests = new List <string> ();
+
         DontDestroyOnLoad (this.gameObject);
 
         SceneManager.sceneLoaded += OnLevelChanged;
@@ -79,7 +86,7 @@ public class Game : MonoBehaviour
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
 
-        if (Input.GetButtonDown ("Inventory")){
+        if (Input.GetButtonDown ("Inventory") && this.state != "Talking"){
             
             if (!inventory.activeSelf) {
                 

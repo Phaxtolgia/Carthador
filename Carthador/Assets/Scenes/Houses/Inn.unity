@@ -1394,8 +1394,8 @@ MonoBehaviour:
   - Hello, Mason/What do you need?
   questDialogues:
   - Hello Mason! I haven't seen you in a while./We haven't had any Aether deliveries
-    in a month./Fret not! I've been holding these 2 bottles just for you ;)/Don't
-    worry about the money, given all that you do for us in this town./Go on, take
+    in a month./Fret not! I've been holding/these 2 bottles just for you ;)/Don't
+    worry about the money,/given all that you do for us in this town./Go on, take
     'em.
 --- !u!61 &942181201
 BoxCollider2D:

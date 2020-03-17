@@ -52,11 +52,20 @@ public class Messages : MonoBehaviour
                 message = "";
                 messages.Clear();
                 page = 0;
+                game.state = "None";
 
                 Time.timeScale = 1;
             }
-            else 
+            else {
+                
+                this.GetComponent<Text>().text = "";
+                message = "";
+                messages.Clear();
+                page = 0;
+                game.state = "InMenu";
+
                 followingMenu.SetActive (true);
+             }
 
 
             this.transform.parent.gameObject.SetActive(false);

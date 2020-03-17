@@ -8,12 +8,14 @@ public class Seller : MonoBehaviour
 
     public string[] dialogues;
     public string[] questDialogues;
+
+
 	
     private Game game;
 
     private GameObject player;
 
-	private bool firstMeeting = true;
+	private bool firstMeeting = false;
 	
     private bool nearPlayer;
 
@@ -40,8 +42,20 @@ public class Seller : MonoBehaviour
             game.state = "Talking";
             game.messages.text = "";
 
-            game.messages.GetComponent<Messages>().followingMenu = innMenu;
-            game.messages.GetComponent<Messages>().message = dialogues[game.gamePhase];
+                game.messages.GetComponent<Messages>().followingMenu = innMenu;
+
+            if (!(game.currentQuest == "First InnKeeper Meeting")) {
+
+                game.messages.GetComponent<Messages>().message = dialogues[game.gamePhase];
+            }
+            else {
+                
+                game.messages.GetComponent<Messages>().message = questDialogues[0];
+                game.inventoryScript.items [game.inventoryScript.items.IndexOf ("Empty")] = "Aether Potion";
+                game.inventoryScript.items [game.inventoryScript.items.IndexOf ("Empty")] = "Aether Potion";
+
+                game.currentQuest = "None";
+            }
         } 
 
         
@@ -58,9 +72,9 @@ public class Seller : MonoBehaviour
             game.messages.text = "Talk";
             game.state = "NearNPC";
 			
-			if (this.name = "InnKeeper"){
+			if (this.name == "InnKeeper" && !game.completedQuests.Contains ("First InnKeeper Meeting")){
 				
-				firstMeeting = false;
+				game.currentQuest = "First InnKeeper Meeting";
 			}	
         }
     }
