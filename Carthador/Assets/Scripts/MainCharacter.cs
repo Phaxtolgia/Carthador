@@ -62,8 +62,6 @@ public class MainCharacter : MonoBehaviour
     void Update()
     {
 
-        print (this.currentHealth);
-
         if (game.isGamePaused)
             return;
         else if (game.state == "None" || game.state == "Fighting" || game.state == "NearNPC"){

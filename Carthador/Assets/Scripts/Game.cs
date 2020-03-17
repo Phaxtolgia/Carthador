@@ -39,6 +39,7 @@ public class Game : MonoBehaviour
 
     [HideInInspector] public Image healthBar;
     [HideInInspector] public Image aetherBar;
+    [HideInInspector] public Text timeText;
 
 
     [HideInInspector] public int timeOfDay = 12;
@@ -57,6 +58,8 @@ public class Game : MonoBehaviour
 
         healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
         aetherBar = GameObject.Find("AetherBar").GetComponent<Image>();
+        timeText = GameObject.Find("TimeText").GetComponent<Text>();
+
 
         this.inventory = GameObject.Find ("Inventory");
         this.inventory.SetActive(false);
@@ -97,6 +100,8 @@ public class Game : MonoBehaviour
 
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
+
+        timeText.text = this.timeOfDay.ToString() + ":00";
 
         if (Input.GetButtonDown ("Inventory") && this.state != "Talking" && this.state != "InMenu"){
             
@@ -231,7 +236,7 @@ public class Game : MonoBehaviour
 
         this.transform.position = player.transform.position;
 
-        print (this.completedQuests [0]);
+        shadeObjects ();
 
         StartCoroutine (changeLastLevelnName(scene));
 
@@ -247,11 +252,18 @@ public class Game : MonoBehaviour
 
     private IEnumerator dayNightCycle () {
 
-        print (this.timeOfDay);
-
-        yield return new WaitForSeconds (1);
+        yield return new WaitForSeconds ((10*60)/24);
 
         this.timeOfDay += 1;
+
+        shadeObjects ();
+
+        this.StartCoroutine (dayNightCycle());
+
+    }
+
+    private void shadeObjects (){
+
         if (this.timeOfDay >= 24)
             this.timeOfDay = 0;
 
@@ -293,12 +305,7 @@ public class Game : MonoBehaviour
         else {
 
             player.GetComponent<SpriteRenderer> ().color = Color.white;
-            
-
-        }
-
-        this.StartCoroutine (dayNightCycle());
-
+        }        
     }
 
 
