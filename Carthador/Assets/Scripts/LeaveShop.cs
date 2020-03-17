@@ -20,7 +20,8 @@ public class LeaveShop : MonoBehaviour
 	{
 		GameObject innMenu = GameObject.Find("InnMenu");
 
-        GameObject.FindGameObjectWithTag ("MainCamera").GetComponent <Game> ().state = "None";
+        Camera.main.GetComponent <Game> ().state = "None";
+        Camera.main.GetComponent <Game> ().isGamePaused = false;
 		
 		innMenu.SetActive(false);
 		

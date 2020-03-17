@@ -37,10 +37,27 @@ public class Seller : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetButtonDown ("Fire1") && nearPlayer) {
+        if (game.isGamePaused)
+            return;
+
+
+        
+        if (game.state != "NearNPC" && Vector3.Distance (player.transform.position, this.transform.position) < 1.3f){
+
+            this.nearPlayer = true;
+
+            game.messagesParent.SetActive(true);
+            game.messages.text = "Talk";
+            game.state = "NearNPC";
+        }
+
+        if (Input.GetButtonDown ("Fire1") && nearPlayer && game.state == "NearNPC") 
+        {
 
             game.state = "Talking";
             game.messages.text = "";
+            game.isGamePaused = true;
+            Time.timeScale = 0;
 
             game.messages.GetComponent<Messages>().followingMenu = innMenu;
 
@@ -59,19 +76,6 @@ public class Seller : MonoBehaviour
         } 
 
         
-    }
-
-
-    public void OnTriggerEnter2D (Collider2D collider) {
-
-        if (collider.tag.Equals ("Player")){
-
-            this.nearPlayer = true;
-
-            game.messagesParent.SetActive(true);
-            game.messages.text = "Talk";
-            game.state = "NearNPC";	
-        }
     }
 
     public void OnTriggerExit2D (Collider2D collider) {

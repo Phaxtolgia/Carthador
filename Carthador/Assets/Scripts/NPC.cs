@@ -20,6 +20,7 @@ public class NPC : MonoBehaviour
     private GameObject player;
     private bool nearPlayer = false;
     private bool previousNearPlayer;
+    private string previousGameState;
 
     // Start is called before the first frame update
     void Start()
@@ -36,11 +37,9 @@ public class NPC : MonoBehaviour
     void Update()
     {
 
-        if (!nextPositionReached) {
+        if (game.isGamePaused)
+            return;
 
-            Vector3 dir = nextPosition - this.transform.position;
-            this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
-        }
 
         if (Vector3.Distance(this.transform.position, nextPosition) < 0.5f && !nextPositionReached)
         {
@@ -52,7 +51,7 @@ public class NPC : MonoBehaviour
 
         if (Vector3.Distance(player.transform.position, this.transform.position) < 1f)
         {
-            if (!nearPlayer)
+            if (!nearPlayer || (previousGameState == "Talking" && game.state != "Talking"))
             {
                 game.messagesParent.SetActive(true);
                 game.messages.text = "Talk";
@@ -85,6 +84,7 @@ public class NPC : MonoBehaviour
 
 
        previousNearPlayer = nearPlayer;
+       previousGameState = game.state;
 
 
 
@@ -92,6 +92,15 @@ public class NPC : MonoBehaviour
     }
 
 
+    public void FixedUpdate() {
+
+        if (!nextPositionReached) {
+
+            Vector3 dir = nextPosition - this.transform.position;
+            this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
+        }
+        
+    }
 
     public IEnumerator changeNextPosition ()
     {

@@ -86,13 +86,15 @@ public class Game : MonoBehaviour
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
 
-        if (Input.GetButtonDown ("Inventory") && this.state != "Talking"){
+        if (Input.GetButtonDown ("Inventory") && this.state != "Talking" && this.state != "InMenu"){
             
             if (!inventory.activeSelf) {
                 
                 inventory.SetActive (true);
                 this.isGamePaused = true;
                 this.fillInventory ();
+
+                this.state = "InInventory";
 
                 Time.timeScale = 0;
                 
@@ -102,10 +104,10 @@ public class Game : MonoBehaviour
                 inventory.SetActive (false);
                 this.isGamePaused = false;
                 this.clearInventory();
+                this.state = "None";
 
                 Time.timeScale = 1;
             }
-
         }
 
     }
@@ -192,6 +194,8 @@ public class Game : MonoBehaviour
 
     public void OnLevelChanged (Scene scene, LoadSceneMode mode) {
 
+        this.transform.position = player.transform.position;
+
         StartCoroutine (changeLastLevelnName(scene));
 
     }
@@ -201,7 +205,6 @@ public class Game : MonoBehaviour
         yield return new WaitForSeconds (0.1f);
 
         this.lastLevel = scene.name;
-
     }
 
 

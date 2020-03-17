@@ -67,9 +67,9 @@ public class MainCharacter : MonoBehaviour
 
         if (game.isGamePaused)
             return;
-
-        previousH = h;
-        previousV = v;
+        else if (game.state == "None" || game.state == "Fighting" || game.state == "NearNPC"){
+            Time.timeScale = 1;
+        }
 
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
@@ -160,6 +160,10 @@ public class MainCharacter : MonoBehaviour
 
         if (this.currentAether < 0)
             this.currentAether = 0;
+
+        
+        previousH = h;
+        previousV = v;
 
     }
 

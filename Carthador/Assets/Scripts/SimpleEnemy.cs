@@ -23,6 +23,7 @@ public class SimpleEnemy : MonoBehaviour
     private GameObject player;
     private bool nearPlayer = false;
     private bool previousNearPlayer;
+    private bool attacked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -41,22 +42,7 @@ public class SimpleEnemy : MonoBehaviour
     void Update()
     {
 
-
-        if (!nextPositionReached)
-        {
-
-            Vector3 dir = nextPosition - this.transform.position;
-
-
-            if (player.GetComponent<MainCharacter>().isDefending && nearPlayer)
-                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position - dir.normalized * 10f * Time.deltaTime);
-            else if (!nearPlayer)
-                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
-            else if (this.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Dynamic)
-                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 3f * Time.deltaTime);
-        }
-
-        if (Vector3.Distance(this.transform.position, nextPosition) < 0.5f && !nextPositionReached && !nearPlayer)
+        if (Vector3.Distance(this.transform.position, nextPosition) < 0.5f && !nextPositionReached && !nearPlayer && !attacked)
         {
             StartCoroutine(changeNextPosition());
             nextPositionReached = true;
@@ -67,7 +53,7 @@ public class SimpleEnemy : MonoBehaviour
         if (Vector3.Distance(player.transform.position, this.transform.position) < detectionRadius * 2 && game.state == "None")
             game.state = "ReadyToFight";
 
-        if (Vector3.Distance(player.transform.position, this.transform.position) < detectionRadius)
+        if (Vector3.Distance(player.transform.position, this.transform.position) < detectionRadius || attacked)
         {
 
             if (!nearPlayer || game.state != "Fighting")
@@ -80,7 +66,7 @@ public class SimpleEnemy : MonoBehaviour
             nextPosition = player.transform.position;
             nearPlayer = true;
         }
-        else
+        else if (!attacked)
         {
             nearPlayer = false;
         }
@@ -89,6 +75,7 @@ public class SimpleEnemy : MonoBehaviour
         if (previousNearPlayer == true && nearPlayer == false)
         {
             game.state = "None";
+            this.attacked = false;
         }
 
 
@@ -105,6 +92,24 @@ public class SimpleEnemy : MonoBehaviour
         
     }
 
+    public void FixedUpdate() {
+        
+        if (!nextPositionReached)
+        {
+
+            Vector3 dir = nextPosition - this.transform.position;
+
+
+            if (player.GetComponent<MainCharacter>().isDefending && nearPlayer)
+                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position - dir.normalized * 10f * Time.deltaTime);
+            else if (!nearPlayer)
+                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 2f * Time.deltaTime);
+            else if (this.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Dynamic)
+                this.GetComponent<Rigidbody2D>().MovePosition(this.transform.position + dir.normalized * 3f * Time.deltaTime);
+        }
+
+    }
+
 
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -113,6 +118,10 @@ public class SimpleEnemy : MonoBehaviour
         {
             Destroy(collision.collider.gameObject);
             this.currentHealth -= 10;
+            this.attacked = true;
+            this.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
+            StartCoroutine (disableAttacked());
         }
         else if (collision.collider.tag == "Player")
         {
@@ -131,5 +140,14 @@ public class SimpleEnemy : MonoBehaviour
         nextPosition = new Vector3(Random.Range(startPosition.x - moveRadius, startPosition.x + moveRadius), Random.Range(startPosition.y - moveRadius, startPosition.y + moveRadius), 0);
         nextPositionReached = false;
         this.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+    }
+
+     public IEnumerator disableAttacked()
+    {
+        yield return new WaitForSeconds(2);
+
+
+
+        attacked = false;
     }
 }

@@ -52,7 +52,7 @@ public class Messages : MonoBehaviour
                 message = "";
                 messages.Clear();
                 page = 0;
-                game.state = "None";
+                game.state = "NearNPC";
 
                 Time.timeScale = 1;
             }
@@ -65,6 +65,7 @@ public class Messages : MonoBehaviour
                 game.state = "InMenu";
 
                 followingMenu.SetActive (true);
+                followingMenu = null;
              }
 
 
