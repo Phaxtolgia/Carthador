@@ -40,6 +40,9 @@ public class Game : MonoBehaviour
     [HideInInspector] public Image aetherBar;
 
 
+    [HideInInspector] public int timeOfDay = 12;
+
+
     // Start is called before the first frame update
 
 
@@ -69,6 +72,10 @@ public class Game : MonoBehaviour
 
 
         completedQuests = new List <string> ();
+
+
+        StartCoroutine (dayNightCycle());
+
 
         DontDestroyOnLoad (this.gameObject);
 
@@ -205,6 +212,55 @@ public class Game : MonoBehaviour
         yield return new WaitForSeconds (0.1f);
 
         this.lastLevel = scene.name;
+    }
+
+
+    private IEnumerator dayNightCycle () {
+
+        print (this.timeOfDay);
+
+        yield return new WaitForSeconds (1);
+
+        this.timeOfDay += 1;
+        if (this.timeOfDay >= 24)
+            this.timeOfDay = 0;
+
+        if (SceneManager.GetActiveScene ().name == "China") {
+            float changeAmount = 1f / 255;
+
+            foreach (GameObject g in Object.FindObjectsOfType (typeof (GameObject))){
+
+                SpriteRenderer s = g.GetComponent <SpriteRenderer> ();
+
+                if (s != null){
+
+                    if (this.timeOfDay >= 5 && this.timeOfDay <= 14) {
+                        Color finalColor = s.color + new Color ((this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount));
+
+                        finalColor.a = s.color.a;
+
+                        if (finalColor.r > 1)
+                            finalColor = Color.white;
+                        
+                        s.color = finalColor;
+                    }
+                    else if (this.timeOfDay >=15 && this.timeOfDay <= 23) {
+
+                        Color finalColor = s.color - new Color ((this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount));
+                        finalColor.a = s.color.a;
+
+                        if (finalColor.r < 0.5)
+                            finalColor = Color.gray;
+                        
+                        s.color = finalColor;
+                    }
+                }
+            }
+
+        }
+
+        this.StartCoroutine (dayNightCycle());
+
     }
 
 
