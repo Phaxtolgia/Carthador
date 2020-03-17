@@ -256,7 +256,8 @@ public class Game : MonoBehaviour
             this.timeOfDay = 0;
 
         if (SceneManager.GetActiveScene ().name == "China") {
-            float changeAmount = 1f / 255;
+            float changeAmountDay = 0.7f / 12;
+            float changeAmountNight = 0.7f/ 24;
 
             foreach (GameObject g in Object.FindObjectsOfType (typeof (GameObject))){
 
@@ -264,8 +265,8 @@ public class Game : MonoBehaviour
 
                 if (s != null){
 
-                    if (this.timeOfDay >= 5 && this.timeOfDay <= 14) {
-                        Color finalColor = s.color + new Color ((this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount));
+                    if (this.timeOfDay >= 5 && this.timeOfDay <= 12) {
+                        Color finalColor = new Color (0.3f + (this.timeOfDay * changeAmountDay),0.3f + (this.timeOfDay * changeAmountDay),0.3f + (this.timeOfDay * changeAmountDay));
 
                         finalColor.a = s.color.a;
 
@@ -274,18 +275,25 @@ public class Game : MonoBehaviour
                         
                         s.color = finalColor;
                     }
-                    else if (this.timeOfDay >=15 && this.timeOfDay <= 23) {
+                    else if (this.timeOfDay >=13 && this.timeOfDay <= 24) {
 
-                        Color finalColor = s.color - new Color ((this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount),(this.timeOfDay * changeAmount));
+                        Color finalColor = new Color (1 - (this.timeOfDay * changeAmountNight), 1 - (this.timeOfDay * changeAmountNight), 1 - (this.timeOfDay * changeAmountNight));
                         finalColor.a = s.color.a;
 
-                        if (finalColor.r < 0.5)
+                        if (finalColor.r < 0.3)
                             finalColor = Color.gray;
                         
                         s.color = finalColor;
                     }
                 }
             }
+
+        }
+
+        else {
+
+            player.GetComponent<SpriteRenderer> ().color = Color.white;
+            
 
         }
 
