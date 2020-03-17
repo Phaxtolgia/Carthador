@@ -12,6 +12,8 @@ public class Inventory : MonoBehaviour
     void Start()
     {
 
+        items = new List <string> ();
+
         maxItems = 10;
 
         for (int i = 0; i < maxItems; i++)

@@ -9,8 +9,8 @@ public class MainCharacter : MonoBehaviour
     public int maxHealth = 100;
     [HideInInspector] public int currentHealth;
 
-    public float maxAether = 100;
-    [HideInInspector]public float currentAether;
+    public int maxAether = 100;
+    [HideInInspector]public int currentAether;
 
     public int airAttackCost = 1;
     public int defenseCost = 5;
@@ -29,17 +29,29 @@ public class MainCharacter : MonoBehaviour
     private GameObject arrow;
 
     private Game game;
+    [HideInInspector] public bool gameJustLoaded = false;
 
     [HideInInspector] public bool attacked = false;
     [HideInInspector] public bool nearEnemy = false;
 
     [HideInInspector] public bool isDefending = false;
+    
+    [HideInInspector] public Vector3  spawnPosition;
 
     // Start is called before the first frame update
 
 
     void Start()
     {
+        
+        currentHealth = maxHealth;
+        currentAether = maxAether;
+
+        game = Camera.main.GetComponent<Game>();
+        inventory = game.GetComponent <Inventory> ();
+
+        anim = this.GetComponent<Animator>();
+        anim.Play("Main1_Idle_Back");
 
          DontDestroyOnLoad (this.gameObject);
 
@@ -50,20 +62,7 @@ public class MainCharacter : MonoBehaviour
     void Update()
     {
 
-        if (game == null) {
-            
-            currentHealth = maxHealth;
-            currentAether = maxAether;
-
-            game = Camera.main.GetComponent<Game>();
-            inventory = game.GetComponent <Inventory> ();
-
-            anim = this.GetComponent<Animator>();
-            anim.Play("Main1_Idle_Back");
-
-
-        }
-
+        print (this.currentHealth);
 
         if (game.isGamePaused)
             return;
@@ -221,42 +220,58 @@ public class MainCharacter : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Aether")
-        {
-            int i = inventory.items.IndexOf ("Empty");
-
-            if ( i >= 0){ 
-                inventory.items [i] = "Aether Potion";
-
-                Destroy(collision.collider.gameObject);
-            }
-
-        }
-        if (collision.collider.tag == "Health")
-        {
-            int i = inventory.items.IndexOf ("Empty");
-
-            if ( i >= 0){ 
-                inventory.items [i] = "Health Potion";
-
-                Destroy(collision.collider.gameObject);
-            }
-            else
-                print (inventory.items[3]);
-        }
+        ;
     }
 
     public void OnLevelChanged (Scene scene, LoadSceneMode mode) {
 
 
-        Vector3 spawnPosition;
-        if (game != null)
+        if (game != null && GameObject.Find ("Player Spawn " + game.lastLevel) != null)
             spawnPosition = GameObject.Find ("Player Spawn " + game.lastLevel).transform.position;
-        else
+        else if (!gameJustLoaded)
             spawnPosition = GameObject.Find ("Player Spawn").transform.position;
         
-        this.transform.position = spawnPosition;
+        this.transform.position = this.spawnPosition;
 
     }
 
+
+    public IEnumerator disableGameJustLoaded()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        this.gameJustLoaded = false;
+    }
+
+    public void loadGame () {
+
+        SaveData data = SaveSystem.Load ();
+
+        if (game == null)
+            game = Camera.main.GetComponent<Game>();
+
+        game.lastLevel = data.scene;
+        game.timeOfDay = data.timeOfDay;
+        game.currentQuest = data.currentQuest;
+        game.mainQuest = data.mainQuest;
+        game.gamePhase = data.gamePhase;
+        game.completedQuests = data.completedQuests;
+
+        Camera.main.GetComponent<Inventory>().items = data.inventoryItems;
+
+        this.spawnPosition = new Vector3 (data.playerPosition [0], data.playerPosition [1], data.playerPosition [2]);
+
+        this.maxHealth = data.playerMaxHealth;
+        this.currentHealth = data.playerCurrentHealth;
+        this.maxAether = data.playerMaxAether;
+        this.currentAether = data.playerCurrentAether;
+
+        this.gameJustLoaded = true;
+        this.StartCoroutine (this.disableGameJustLoaded ());
+
+
+        SceneManager.LoadScene (Camera.main.GetComponent<Game>().lastLevel);
+
+
+    }
 }

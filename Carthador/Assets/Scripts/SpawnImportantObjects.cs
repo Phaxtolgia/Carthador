@@ -41,7 +41,30 @@ public class SpawnImportantObjects : MonoBehaviour
         canvas.SetActive (true);
 
         SceneManager.LoadScene ("China");
+    }
 
+    public void OnStartMenu_LoadGame () {
+
+        player.SetActive (true);
+        camera.SetActive(true);
+        canvas.SetActive (true);
+
+        this.StartCoroutine (this.loadGame());
+    }
+
+
+    public void OnStartMenu_ExitGame () {
+        
+        Application.Quit ();
+
+    }
+
+
+    public IEnumerator loadGame () {
+
+        yield return new WaitForSeconds (0.1f);
+
+        player.GetComponent <MainCharacter>().loadGame ();
 
     }
 

@@ -19,10 +19,11 @@ public class Game : MonoBehaviour
 
     [HideInInspector] public GameObject inventory;
     [HideInInspector] public Inventory inventoryScript;
-    private List <GameObject> inventoryItems;
+    [HideInInspector]public List <GameObject> inventoryItems;
 
 
-    public GameObject innMenu;
+    [HideInInspector]public GameObject mainMenu;
+    [HideInInspector]public GameObject innMenu;
 
 
     [HideInInspector] public bool isGamePaused = false;
@@ -66,6 +67,10 @@ public class Game : MonoBehaviour
         messagesParent = messages.transform.parent.gameObject;
         messagesParent.SetActive(false);
         
+
+        mainMenu = GameObject.Find ("MainMenu");
+        mainMenu.SetActive(false);
+
         innMenu = GameObject.Find ("InnMenu");
         innMenu.SetActive(false);
 
@@ -111,6 +116,29 @@ public class Game : MonoBehaviour
                 inventory.SetActive (false);
                 this.isGamePaused = false;
                 this.clearInventory();
+                this.state = "None";
+
+                Time.timeScale = 1;
+            }
+        }
+
+
+
+         if (Input.GetButtonDown ("Cancel") && this.state != "Talking" && this.state != "InInventory"){
+            
+            if (!mainMenu.activeSelf) {
+                
+                mainMenu.SetActive (true);
+                this.isGamePaused = true;
+                this.state = "InMenu";
+
+                Time.timeScale = 0;
+                
+            }
+            else if (mainMenu.activeSelf) {
+                
+                mainMenu.SetActive (false);
+                this.isGamePaused = false;
                 this.state = "None";
 
                 Time.timeScale = 1;
@@ -202,6 +230,8 @@ public class Game : MonoBehaviour
     public void OnLevelChanged (Scene scene, LoadSceneMode mode) {
 
         this.transform.position = player.transform.position;
+
+        print (this.completedQuests [0]);
 
         StartCoroutine (changeLastLevelnName(scene));
 
