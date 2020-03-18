@@ -42,7 +42,7 @@ public class Game : MonoBehaviour
     [HideInInspector] public Text timeText;
 
 
-    [HideInInspector] public int timeOfDay = 12;
+    public int timeOfDay = 12;
 
 
     // Start is called before the first frame update
