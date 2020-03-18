@@ -101,7 +101,12 @@ public class Game : MonoBehaviour
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
 
-        timeText.text = this.timeOfDay.ToString() + ":00";
+        if (this.timeOfDay != 0 && this.timeOfDay != 12)
+            timeText.text = (this.timeOfDay % 12).ToString() + ":00";
+        else if (this.timeOfDay == 0)
+            timeText.text = "OO:00";
+        else
+            timeText.text = "12:00";
 
         if (Input.GetButtonDown ("Inventory") && this.state != "Talking" && this.state != "InMenu"){
             
@@ -252,9 +257,12 @@ public class Game : MonoBehaviour
 
     private IEnumerator dayNightCycle () {
 
-        yield return new WaitForSeconds ((0.1f*60)/24);
+        yield return new WaitForSeconds ((0.5f*60)/24);
 
         this.timeOfDay += 1;
+
+        if (this.timeOfDay >= 24)
+            this.timeOfDay = 0;
 
         shadeObjects ();
 
@@ -264,48 +272,24 @@ public class Game : MonoBehaviour
 
     private void shadeObjects (){
 
-        if (this.timeOfDay >= 24)
-            this.timeOfDay = 0;
-
         if (SceneManager.GetActiveScene ().name == "China") {
-            float changeAmountDay = 0.7f / 12;
-            float changeAmountNight = 0.7f/ 24;
+           
+            GameObject globalLight = GameObject.Find ("GlobalLight");
 
-            foreach (GameObject g in Object.FindObjectsOfType (typeof (GameObject))){
+            if (this.timeOfDay >= 0 && this.timeOfDay <= 5)
+                globalLight.transform.rotation = Quaternion.Euler (new Vector3 (50, 50 ,0 ));
+            else if (this.timeOfDay >= 6 && this.timeOfDay <= 8)
+                globalLight.transform.rotation = Quaternion.Euler (new Vector3 (50, 50 - this.timeOfDay * 2.5f ,0 ));
+            else if (this.timeOfDay >= 9 && this.timeOfDay <= 17)
+                globalLight.transform.rotation = Quaternion.Euler (new Vector3 (50, 0,0 ));
+            else if (this.timeOfDay >= 18 && this.timeOfDay <= 23)
+                globalLight.transform.rotation = Quaternion.Euler (new Vector3 (50, this.timeOfDay * 1.5f,0 ));
 
-                SpriteRenderer s = g.GetComponent <SpriteRenderer> ();
 
-                if (s != null){
+            
 
-                    if (this.timeOfDay >= 5 && this.timeOfDay <= 12) {
-                        Color finalColor = new Color (0.3f + (this.timeOfDay * changeAmountDay),0.3f + (this.timeOfDay * changeAmountDay),0.3f + (this.timeOfDay * changeAmountDay));
-
-                        finalColor.a = s.color.a;
-
-                        if (finalColor.r > 1)
-                            finalColor = Color.white;
-                        
-                        s.color = finalColor;
-                    }
-                    else if (this.timeOfDay >=13 && this.timeOfDay <= 24) {
-
-                        Color finalColor = new Color (1 - (this.timeOfDay * changeAmountNight), 1 - (this.timeOfDay * changeAmountNight), 1 - (this.timeOfDay * changeAmountNight));
-                        finalColor.a = s.color.a;
-
-                        if (finalColor.r < 0.3)
-                            finalColor = Color.gray;
-                        
-                        s.color = finalColor;
-                    }
-                }
-            }
-
+               
         }
-
-        else {
-
-            player.GetComponent<SpriteRenderer> ().color = Color.white;
-        }        
     }
 
 
