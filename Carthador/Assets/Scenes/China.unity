@@ -323,7 +323,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3ce315d22aab6c70fa197d8a6e26c8c6, type: 2}
+  - {fileID: 2100000, guid: 58ed4699465074a0597b9fd34e9c146b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
