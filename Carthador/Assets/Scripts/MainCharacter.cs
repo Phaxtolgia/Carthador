@@ -38,6 +38,8 @@ public class MainCharacter : MonoBehaviour
     
     [HideInInspector] public Vector3  spawnPosition;
 
+    private GameObject playerLight;
+
     // Start is called before the first frame update
 
 
@@ -52,6 +54,8 @@ public class MainCharacter : MonoBehaviour
 
         anim = this.GetComponent<Animator>();
         anim.Play("Main1_Idle_Back");
+
+        playerLight = this.transform.GetChild (0).gameObject;
 
          DontDestroyOnLoad (this.gameObject);
 
@@ -68,8 +72,17 @@ public class MainCharacter : MonoBehaviour
             Time.timeScale = 1;
         }
 
+
+        if ((game.timeOfDay >= 20 || game.timeOfDay <= 7) && !playerLight.activeSelf)
+            playerLight.SetActive (true);
+        else if ((game.timeOfDay >= 8 && game.timeOfDay <= 19) && playerLight.activeSelf)
+            playerLight.SetActive (false);
+
+
+
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
+
 
 
         if (Mathf.Sign(scale.x) != Mathf.Sign(h) && h != 0)

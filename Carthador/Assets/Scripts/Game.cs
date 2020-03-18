@@ -257,7 +257,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator dayNightCycle () {
 
-        yield return new WaitForSeconds ((0.5f*60)/24);
+        yield return new WaitForSeconds ((20f*60)/24);
 
         this.timeOfDay += 1;
 
