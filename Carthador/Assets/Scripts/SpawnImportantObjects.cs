@@ -17,14 +17,13 @@ public class SpawnImportantObjects : MonoBehaviour
         camera = GameObject.Instantiate (Resources.Load <GameObject> ("Main Camera"),new Vector3 (0, 0, -10), Quaternion.identity);
         player = GameObject.Instantiate (Resources.Load <GameObject> ("Player"), new Vector3 (0, 0, 0), Quaternion.identity);
         canvas = GameObject.Instantiate (Resources.Load <GameObject> ("Canvas"));
-
-        player.SetActive (false);
-        camera.SetActive (false);
-        canvas.SetActive (false);
     }
     // Start is called before the first frame update
     void Start()
     {
+
+        StartCoroutine (deactivateMainObjets());
+        
         
     }
 
@@ -65,6 +64,16 @@ public class SpawnImportantObjects : MonoBehaviour
         yield return new WaitForSeconds (0.1f);
 
         player.GetComponent <MainCharacter>().loadGame ();
+
+    }
+
+    public IEnumerator deactivateMainObjets () {
+
+        yield return new WaitForSeconds (0.1f);
+
+        player.SetActive (false);
+        camera.SetActive (false);
+        canvas.SetActive (false);
 
     }
 

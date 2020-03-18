@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1450455986392870278}
   - component: {fileID: 670033342}
   - component: {fileID: 670033343}
+  - component: {fileID: 7844429728386042428}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -117,12 +118,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gamePhase: 0
+  mainQuest: 
   currentQuest: 
+  completedQuests: []
   currentQuestPhase: 0
   messages: {fileID: 0}
   messagesParent: {fileID: 0}
   inventory: {fileID: 0}
   inventoryScript: {fileID: 0}
+  inventoryItems: []
+  equipmentPanel: {fileID: 0}
+  equipmentContent: {fileID: 0}
+  equipmentScript: {fileID: 7844429728386042428}
+  mainMenu: {fileID: 0}
   innMenu: {fileID: 0}
   isGamePaused: 0
   player: {fileID: 0}
@@ -130,6 +138,8 @@ MonoBehaviour:
   state: 
   healthBar: {fileID: 0}
   aetherBar: {fileID: 0}
+  timeText: {fileID: 0}
+  timeOfDay: 12
 --- !u!114 &670033342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,3 +168,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPotionRecoveryAmount: 10
   aetherPotionRecoveryAmount: 10
+--- !u!114 &7844429728386042428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450455986392870267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dac2c0d8e5b654c8a50732f3e3e94ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentPanel: {fileID: 0}
+  equipmentContent: {fileID: 0}
