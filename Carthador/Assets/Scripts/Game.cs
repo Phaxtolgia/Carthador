@@ -22,6 +22,14 @@ public class Game : MonoBehaviour
     [HideInInspector]public List <GameObject> inventoryItems;
 
 
+
+    [HideInInspector] public GameObject equipmentPanel;
+    [HideInInspector] public Transform equipmentContent;
+    [HideInInspector] public Equipment equipmentScript;
+    [HideInInspector] public Dictionary <string, List <string>> equipmentItems;
+    [HideInInspector] public Dictionary <string, string> currentlyEquipped;
+
+
     [HideInInspector]public GameObject mainMenu;
     [HideInInspector]public GameObject innMenu;
 
@@ -66,6 +74,15 @@ public class Game : MonoBehaviour
         this.inventoryScript = this.GetComponent<Inventory>();
         this.inventoryItems = new List <GameObject> ();
 
+
+        this.equipmentScript = this.GetComponent <Equipment>();
+        this.equipmentPanel = equipmentScript.equipmentPanel;
+        this.equipmentContent = equipmentScript.equipmentContent;
+        this.equipmentItems = equipmentScript.items;
+        this.currentlyEquipped = equipmentScript.currentlyEquipped;
+
+
+
         messages = GameObject.Find("MessagesText").GetComponent<Text>();
         messagesParent = messages.transform.parent.gameObject;
         messagesParent.SetActive(false);
@@ -97,6 +114,17 @@ public class Game : MonoBehaviour
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player");
 
+        
+        if (this.equipmentPanel == null) {
+
+            this.equipmentScript = this.GetComponent <Equipment>();
+            this.equipmentPanel = equipmentScript.equipmentPanel;
+            this.equipmentContent = equipmentScript.equipmentContent;
+            this.equipmentItems = equipmentScript.items;
+            this.currentlyEquipped = equipmentScript.currentlyEquipped;
+
+
+        }
 
         healthBar.fillAmount = (float) playerController.currentHealth / playerController.maxHealth;
         aetherBar.fillAmount = (float) playerController.currentAether / playerController.maxAether;
@@ -108,7 +136,7 @@ public class Game : MonoBehaviour
         else
             timeText.text = "12:00";
 
-        if (Input.GetButtonDown ("Inventory") && this.state != "Talking" && this.state != "InMenu"){
+        if (Input.GetButtonDown ("Inventory") && this.state != "Talking" && this.state != "InMenu" && this.state != "InEquipment"){
             
             if (!inventory.activeSelf) {
                 
@@ -134,7 +162,7 @@ public class Game : MonoBehaviour
 
 
 
-         if (Input.GetButtonDown ("Cancel") && this.state != "Talking" && this.state != "InInventory"){
+         if (Input.GetButtonDown ("Cancel") && this.state != "Talking" && this.state != "InInventory" && this.state != "InEquipment"){
             
             if (!mainMenu.activeSelf) {
                 
@@ -155,8 +183,35 @@ public class Game : MonoBehaviour
             }
         }
 
+        if (Input.GetButtonDown ("Equipment") && this.state != "Talking" && this.state != "InInventory" && this.state != "InMenu"){
+            
+            if (!equipmentPanel.activeSelf) {
+                
+                equipmentPanel.SetActive (true);
+                this.isGamePaused = true;
+                this.state = "InEquipment";
+                fillEquipment ();
+
+                Time.timeScale = 0;
+                
+            }
+            else if (equipmentPanel.activeSelf) {
+                
+                equipmentPanel.SetActive (false);
+                this.isGamePaused = false;
+                this.state = "None";
+                clearEquipment ();
+
+                Time.timeScale = 1;
+            }
+        }
+
     }
 
+
+
+
+///////////////////////////////////////////////// INVENTORY ////////////////////////////////////////////
 
     private void fillInventory () {
 
@@ -237,6 +292,92 @@ public class Game : MonoBehaviour
     }
 
 
+
+    ///////////////////////////////////////////////// EQUIPMENT ////////////////////////////////////////////
+    
+        [HideInInspector] public Transform helmet;
+        [HideInInspector] public Transform shoulders;
+        [HideInInspector] public Transform breastplate;
+        [HideInInspector] public Transform gauntlets;
+        [HideInInspector] public Transform ringLeft;
+        [HideInInspector] public Transform ringRight;
+        [HideInInspector] public Transform legs;
+        [HideInInspector] public Transform greaves;
+        [HideInInspector] public Transform boots;
+        [HideInInspector] public Transform weaponLeft;
+        [HideInInspector] public Transform weaponRight;
+
+    private void fillEquipment () {
+
+        equipmentItems = equipmentScript.items;
+        currentlyEquipped = equipmentScript.currentlyEquipped;
+
+        helmet =  equipmentPanel.transform.GetChild (0);
+        shoulders =  equipmentPanel.transform.GetChild (1);
+        breastplate =  equipmentPanel.transform.GetChild (2);
+        gauntlets =  equipmentPanel.transform.GetChild (3);
+        ringLeft =  equipmentPanel.transform.GetChild (4);
+        ringRight =  equipmentPanel.transform.GetChild (5);
+        legs =  equipmentPanel.transform.GetChild (6);
+        greaves =  equipmentPanel.transform.GetChild (7);
+        boots =  equipmentPanel.transform.GetChild (8);
+        weaponLeft =  equipmentPanel.transform.GetChild (9);
+        weaponRight =  equipmentPanel.transform.GetChild (10);
+
+        helmet.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Helmet/" + currentlyEquipped ["helmet"]);
+        helmet.GetComponent <EquipmentItem> ().itemName = currentlyEquipped ["helmet"];
+        helmet.GetComponent <EquipmentItem> ().category = "helmet";
+        
+        //shoulders.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Shoulders/" + currentlyEquipped ["shoulders"]);
+
+        breastplate.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Breastplate/" + currentlyEquipped ["breastplate"]);
+        breastplate.GetComponent <EquipmentItem> ().itemName = currentlyEquipped ["breastplate"];
+        breastplate.GetComponent <EquipmentItem> ().category = "breastplate";
+
+        //gauntlets.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Gauntlets/" + currentlyEquipped ["gauntlets"]);
+
+        //ringLeft.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Rings/" + currentlyEquipped ["ringLeft"]);
+
+        //ringRight.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Rings/" + currentlyEquipped ["ringRight"]);
+        //ringRight.GetComponent <EquipmentItem> ().itemName = currentlyEquipped ["ringRight"];
+        //ringRight.GetComponent <EquipmentItem> ().category = "ringRight";
+
+        //legs.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Legs/" + currentlyEquipped ["legs"]);
+
+        //greaves.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Greaves/" + currentlyEquipped ["greaves"]);
+
+        boots.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Boots/" + currentlyEquipped ["boots"]);
+        boots.GetComponent <EquipmentItem> ().itemName = currentlyEquipped ["boots"];
+        boots.GetComponent <EquipmentItem> ().category = "boots";
+
+        //weaponLeft.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Weapons/" + currentlyEquipped ["weaponLeft"]);
+
+        //weaponRight.GetComponent <Image> ().overrideSprite = Resources.Load <Sprite> ("Equipment/Weapons/" + currentlyEquipped ["weaponRight"]);
+        
+    }
+
+
+    private void clearEquipment () {
+
+        equipmentPanel.GetComponent <EquipmentPanel> ().clearScrollView ();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void OnLevelChanged (Scene scene, LoadSceneMode mode) {
 
         this.transform.position = player.transform.position;
@@ -291,9 +432,4 @@ public class Game : MonoBehaviour
                
         }
     }
-
-
-
-
-
 }
